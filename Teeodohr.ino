@@ -9,8 +9,8 @@ static const uint8_t LED2 = 5;
 static const uint8_t LED3 = 6;
 static const uint8_t PIEZO = 10;
 static const uint8_t SERVO = 11;
-static const uint8_t BUTTON_TIME = 9;
-static const uint8_t BUTTON_START_STOP = 8;
+static const uint8_t BUTTON_TIME = A1;
+static const uint8_t BUTTON_START_STOP = A2;
 
 // Servo SG90 calibration
 static const int SERVO_MIN_PULSE = 670;
@@ -45,8 +45,8 @@ void setup()
 	pinMode(LED3, OUTPUT);
 	pinMode(PIEZO, OUTPUT);
 	pinMode(SERVO, OUTPUT);
-	pinMode(BUTTON_TIME, INPUT_PULLUP);
-	pinMode(BUTTON_START_STOP, INPUT_PULLUP);
+	pinMode(BUTTON_TIME, INPUT);
+	pinMode(BUTTON_START_STOP, INPUT);
 
 	readCurrentDurationFromEeprom();
 	showCurrentDuration();
@@ -90,7 +90,7 @@ void updateCurrentDurationInEeprom()
 
 bool isButtonPressed(uint8_t buttonPin)
 {
-	return !digitalRead(buttonPin);
+	return digitalRead(buttonPin);
 }
 
 void waitForButtonRelease(uint8_t buttonPin)
@@ -100,7 +100,7 @@ void waitForButtonRelease(uint8_t buttonPin)
 	do
 	{
 		delay(buttonBouncingTime_ms);
-	} while (!digitalRead(buttonPin));
+	} while (isButtonPressed(buttonPin));
 }
 
 void switchDuration()
